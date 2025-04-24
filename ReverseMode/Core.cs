@@ -1,6 +1,5 @@
 ﻿using MelonLoader;
 using UnityEngine;
-using System.Collections;
 
 [assembly: MelonInfo(typeof(ReverseMode.Core), "ReverseMode", "1.0.0", "joeyexists", null)]
 [assembly: MelonGame("Little Flag Software, LLC", "Neon White")]
