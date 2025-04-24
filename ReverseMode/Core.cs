@@ -112,8 +112,6 @@ namespace ReverseMode
             if (!modEnabled)
                 return;
 
-            MelonLogger.Msg(sceneName);
-            
             switch (sceneName)
             {
                 case "HUB_HEAVEN":
