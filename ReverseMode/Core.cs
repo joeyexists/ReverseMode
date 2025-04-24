@@ -126,7 +126,8 @@ namespace ReverseMode
         public override void OnPreferencesSaved()
         {
             base.OnPreferencesSaved();
-            UpdateAntiCheat();
+            if (modEnabled)
+                UpdateAntiCheat();
         }
     }
 }
