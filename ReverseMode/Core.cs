@@ -41,8 +41,8 @@ namespace ReverseMode
             if (currentLevel == null)
                 return;
 
-            // Ignore boss levels
-            if (currentLevel.isBossFight)
+            // Ignore boss levels & sacrifice
+            if (currentLevel.isBossFight || currentLevel.GetLevelDisplayName() == "Interface/LEVELNAME_TUT_ORIGIN")
                 return;
 
             GameObject levelGoal;
@@ -119,7 +119,7 @@ namespace ReverseMode
                     break;
 
                 case "Player":
-                    if (Settings.reverseModeEnabled.Value)
+                    if (Settings.reverseModeEnabled.Value && NeonLite.Modules.Anticheat.Active)
                         ReverseLevel();
                     break;
             }
