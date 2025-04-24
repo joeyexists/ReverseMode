@@ -1,5 +1,6 @@
 ﻿using MelonLoader;
 using UnityEngine;
+using System.Collections;
 
 [assembly: MelonInfo(typeof(ReverseMode.Core), "ReverseMode", "1.0.0", "joeyexists", null)]
 [assembly: MelonGame("Little Flag Software, LLC", "Neon White")]
@@ -15,7 +16,6 @@ namespace ReverseMode
             // Make sure NeonLite is loaded
             var neonLiteAssembly = AppDomain.CurrentDomain.GetAssemblies()
                 .FirstOrDefault(a => a.GetName().Name.Equals("NeonLite", StringComparison.OrdinalIgnoreCase));
-
             if (neonLiteAssembly == null)
             {
                 MelonLogger.Error("NeonLite not found!");
@@ -42,27 +42,29 @@ namespace ReverseMode
             if (currentLevel == null)
                 return;
 
-            // Ignore boss levels 
+            // Ignore boss levels
             if (currentLevel.isBossFight)
                 return;
 
-            // Get level goal depending on level type
             GameObject levelGoal;
 
+            // Get level goal depending on level type
             if (currentLevel.isSidequest)
                 levelGoal = UnityEngine.Object.FindObjectsOfType<GameObject>().FirstOrDefault(obj => obj.name.StartsWith("LoreCollectible"));
-
             else if (currentLevel.useBookOfLifeLevelGoal)
                 levelGoal = GameObject.Find("BookOfLife_Ending");
-
             else
                 levelGoal = GameObject.Find("Level Goal");
 
-            // Get level spawn point
             GameObject levelStart = GameObject.Find("Teleport_START");
 
             if (levelStart == null || levelGoal == null)
                 return;
+
+            // De-activate fail states
+            var failStates = UnityEngine.Object.FindObjectsOfType<GameObject>().Where(obj => obj.name.StartsWith("FailState") && obj.activeInHierarchy);
+            foreach (var failState in failStates)
+                failState.SetActive(false);
 
             // Swap positions of the spawn point and the goal
             Vector3 spawnPos = levelStart.transform.position;
@@ -107,8 +109,11 @@ namespace ReverseMode
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             base.OnSceneWasLoaded(buildIndex, sceneName);
+
             if (!modEnabled)
                 return;
+
+            MelonLogger.Msg(sceneName);
             
             switch (sceneName)
             {
