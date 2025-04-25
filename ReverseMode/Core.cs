@@ -9,19 +9,8 @@ namespace ReverseMode
     public class Core : MelonMod
     {
         private static Game Game;
-        private static bool modEnabled = true; 
         public override void OnLateInitializeMelon()
         {
-            // Make sure NeonLite is loaded
-            var neonLiteAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                .FirstOrDefault(a => a.GetName().Name.Equals("NeonLite", StringComparison.OrdinalIgnoreCase));
-            if (neonLiteAssembly == null)
-            {
-                MelonLogger.Error("NeonLite not found!");
-                modEnabled = false;
-                return;
-            }
-
             Game = Singleton<Game>.Instance;
             Settings.Register();
             UpdateAntiCheat();
@@ -109,9 +98,6 @@ namespace ReverseMode
         {
             base.OnSceneWasLoaded(buildIndex, sceneName);
 
-            if (!modEnabled)
-                return;
-
             switch (sceneName)
             {
                 case "HUB_HEAVEN":
@@ -128,8 +114,7 @@ namespace ReverseMode
         public override void OnPreferencesSaved()
         {
             base.OnPreferencesSaved();
-            if (modEnabled)
-                UpdateAntiCheat();
+            UpdateAntiCheat();
         }
     }
 }
